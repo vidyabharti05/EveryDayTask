@@ -135,7 +135,7 @@ const blastconfetti = () => {
   fire(0.1, { spread: 120, startVelocity: 45 });
 };
 
-// 🔔 Check for alarm every 30 seconds
+
 setInterval(() => {
   const now = new Date();
   const currentTime = now.toTimeString().slice(0, 5); // HH:MM
@@ -149,13 +149,13 @@ setInterval(() => {
   });
 }, 30000);
 
-// 📢 Silent Notification — No Sound
+
 function showNotification(taskText) {
   if (Notification.permission === "granted") {
     new Notification("Reminder!", {
       body: `Time for: ${taskText}`,
       icon: "download (2).png",
-      silent: true   // 🔥 NO SOUND
+      silent: true   
     });
   } else if (Notification.permission !== "denied") {
     Notification.requestPermission().then((perm) => {
@@ -163,4 +163,5 @@ function showNotification(taskText) {
     });
   }
 }
+
 
