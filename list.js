@@ -1,3 +1,13 @@
+// Register service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+
+// Ask notification permission
+if (Notification.permission !== "granted") {
+  Notification.requestPermission();
+}
+
 let tasks = [];
 
 // Load saved tasks
@@ -24,10 +34,11 @@ const addTask = () => {
     tasks.push({
       text: text,
       completed: false,
-      time: time, // "HH:MM"
+      time: time,
       id: Date.now(),
       notified: false,
     });
+
     taskInput.value = "";
     timeInput.value = "";
     updateTasksList();
@@ -132,25 +143,19 @@ setInterval(() => {
   tasks.forEach((task) => {
     if (!task.completed && !task.notified && task.time === currentTime) {
       showNotification(task.text);
-      playAlarm();
-      task.notified = true; // to avoid repeat
+      task.notified = true; 
       saveTasks();
     }
   });
 }, 30000);
 
-// Alarm sound
-function playAlarm() {
-  const audio = new Audio("mixkit-urgent-simple-tone-loop-2976.wav");
-  audio.play();
-}
-
-// Browser notification
+// 📢 Silent Notification — No Sound
 function showNotification(taskText) {
   if (Notification.permission === "granted") {
     new Notification("Reminder!", {
       body: `Time for: ${taskText}`,
       icon: "download (2).png",
+      silent: true   // 🔥 NO SOUND
     });
   } else if (Notification.permission !== "denied") {
     Notification.requestPermission().then((perm) => {
